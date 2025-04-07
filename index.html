@@ -24,32 +24,38 @@
 
   <script>
     const firebaseConfig = {
-  apiKey: "AIzaSyDbaLtfWi8UgwXb1N8cKtvIdmQmBaeq8OA",
-  authDomain: "projectkairos025.firebaseapp.com",
-  projectId: "projectkairos025",
-  storageBucket: "projectkairos025.firebasestorage.app",
-  messagingSenderId: "264781847954",
-  appId: "1:264781847954:web:f8aa1c078beeacb84d754b"
-};
+      apiKey: "AIzaSyDbaLtfWi8UgwXb1N8cKtvIdmQmBaeq8OA",
+      authDomain: "projectkairos025.firebaseapp.com",
+      projectId: "projectkairos025",
+      storageBucket: "projectkairos025.appspot.com",  <!-- Fixed typo in the bucket URL -->
+      messagingSenderId: "264781847954",
+      appId: "1:264781847954:web:f8aa1c078beeacb84d754b"
+    };
+    
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
     function postComment() {
       const text = document.getElementById('commentInput').value.trim();
-      if (!text) return;
-      db.ref('comments').push({ text, timestamp: new Date().toLocaleString() });
-      document.getElementById('commentInput').value = '';
+      if (!text) return; // Don't post empty comments
+      db.ref('comments').push({
+        text: text,
+        timestamp: new Date().toLocaleString()
+      });
+      document.getElementById('commentInput').value = ''; // Clear the input after posting
     }
 
     db.ref('comments').on('value', snapshot => {
       const container = document.getElementById('comments');
-      container.innerHTML = '';
+      container.innerHTML = ''; // Clear previous comments
       const data = snapshot.val();
-      for (const id in data) {
-        const div = document.createElement('div');
-        div.className = 'comment';
-        div.innerHTML = `${data[id].text} <div class="timestamp">Posted on: ${data[id].timestamp}</div>`;
-        container.prepend(div);
+      if (data) {
+        for (const id in data) {
+          const div = document.createElement('div');
+          div.className = 'comment';
+          div.innerHTML = `${data[id].text} <div class="timestamp">Posted on: ${data[id].timestamp}</div>`;
+          container.prepend(div); // Show new comments first
+        }
       }
     });
   </script>
