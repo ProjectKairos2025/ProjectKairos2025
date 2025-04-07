@@ -16,7 +16,7 @@
 
   <h2>Leave a Comment</h2>
   <textarea id="commentInput" placeholder="Write your comment..."></textarea>
-  <button onclick="postComment()">Post Comment</button>
+  <button id="postButton">Post Comment</button>
   <div id="comments"></div>
 
   <!-- Firebase SDKs (modular) -->
@@ -27,6 +27,7 @@
     const firebaseConfig = {
       apiKey: "AIzaSyDbaLtfWi8UgwXb1N8cKtvIdmQmBaeq8OA",
       authDomain: "projectkairos025.firebaseapp.com",
+      databaseURL: "https://projectkairos025-default-rtdb.asia-southeast1.firebasedatabase.app",  // Updated database URL
       projectId: "projectkairos025",
       storageBucket: "projectkairos025.appspot.com",
       messagingSenderId: "264781847954",
@@ -37,6 +38,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // Post comment function
     function postComment() {
       const text = document.getElementById('commentInput').value.trim();
       if (!text) return;
@@ -61,8 +63,10 @@
         }
       }
     });
+
+    // Attach event listener to button
+    document.getElementById('postButton').addEventListener('click', postComment);
   </script>
 
 </body>
 </html>
-
