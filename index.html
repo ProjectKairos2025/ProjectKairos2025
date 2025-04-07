@@ -2,33 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Comments Section</title>
+  <title>Firebase Comments</title>
+
+  <!-- 💅 Basic styling -->
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
       max-width: 600px;
       margin: auto;
+      padding: 20px;
     }
-    .comment-box {
-      margin-bottom: 20px;
-    }
+
     textarea {
       width: 100%;
       height: 80px;
-      margin-bottom: 10px;
-      resize: vertical;
       padding: 10px;
+      margin-bottom: 10px;
       font-size: 1em;
+      resize: none;
     }
+
     button {
-      padding: 10px 20px;
-      background: #007bff;
+      background: #28a745;
       color: white;
+      padding: 10px 20px;
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      font-size: 1em;
     }
+
     .comment {
       border-bottom: 1px solid #ddd;
       padding: 10px 0;
@@ -37,30 +40,47 @@
 </head>
 <body>
 
-  <h2>Comments</h2>
+  <!-- 📝 Input area -->
+  <h2>Leave a Comment</h2>
+  <textarea id="commentInput" placeholder="Type your comment here..."></textarea>
+  <button onclick="postComment()">Post</button>
 
-  <div class="comment-box">
-    <textarea id="comment-input" placeholder="Write a comment..."></textarea>
-    <button onclick="postComment()">Post Comment</button>
-  </div>
+  <!-- 📋 Area to show submitted comments -->
+  <div id="comments"></div>
 
-  <div id="comment-section"></div>
+  <!-- 🔌 Firebase SDKs (don’t edit) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
 
   <script>
+    // 🔐 Your Firebase config (copy this from Firebase setup!)
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDbaLtfWi8UgwXb1N8cKtvIdmQmBaeq8OA",
+  authDomain: "projectkairos025.firebaseapp.com",
+  projectId: "projectkairos025",
+  storageBucket: "projectkairos025.firebasestorage.app",
+  messagingSenderId: "264781847954",
+  appId: "1:264781847954:web:f8aa1c078beeacb84d754b"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+    };
+
+    // 🔧 Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // ✏️ Function to submit a comment
     function postComment() {
-      const input = document.getElementById("comment-input");
-      const commentText = input.value.trim();
-      if (!commentText) return;
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+      if (!text) return;
 
-      const commentSection = document.getElementById("comment-section");
-      const newComment = document.createElement("div");
-      newComment.className = "comment";
-      newComment.textContent = commentText;
-
-      commentSection.prepend(newComment);
-      input.value = "";
-    }
-  </script>
-
-</body>
-</html>
+      // Save to
