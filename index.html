@@ -19,15 +19,16 @@
   <button onclick="postComment()">Post Comment</button>
   <div id="comments"></div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
+  <!-- Firebase SDKs as modules -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
 
-  <script>
+  <script type="module">
     const firebaseConfig = {
       apiKey: "AIzaSyDbaLtfWi8UgwXb1N8cKtvIdmQmBaeq8OA",
       authDomain: "projectkairos025.firebaseapp.com",
       projectId: "projectkairos025",
-      storageBucket: "projectkairos025.appspot.com",  <!-- Fixed typo in the bucket URL -->
+      storageBucket: "projectkairos025.appspot.com",
       messagingSenderId: "264781847954",
       appId: "1:264781847954:web:f8aa1c078beeacb84d754b"
     };
@@ -37,12 +38,12 @@
 
     function postComment() {
       const text = document.getElementById('commentInput').value.trim();
-      if (!text) return; // Don't post empty comments
+      if (!text) return;
       db.ref('comments').push({
         text: text,
         timestamp: new Date().toLocaleString()
       });
-      document.getElementById('commentInput').value = ''; // Clear the input after posting
+      document.getElementById('commentInput').value = ''; // Clear input
     }
 
     db.ref('comments').on('value', snapshot => {
