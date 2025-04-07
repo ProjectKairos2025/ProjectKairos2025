@@ -19,11 +19,11 @@
   <button onclick="postComment()">Post Comment</button>
   <div id="comments"></div>
 
-  <!-- Firebase SDKs as modules -->
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
-
+  <!-- Firebase SDKs (modular) -->
   <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js';
+    import { getDatabase, ref, push, onValue } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js';
+
     const firebaseConfig = {
       apiKey: "AIzaSyDbaLtfWi8UgwXb1N8cKtvIdmQmBaeq8OA",
       authDomain: "projectkairos025.firebaseapp.com",
@@ -32,21 +32,23 @@
       messagingSenderId: "264781847954",
       appId: "1:264781847954:web:f8aa1c078beeacb84d754b"
     };
-    
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
     function postComment() {
       const text = document.getElementById('commentInput').value.trim();
       if (!text) return;
-      db.ref('comments').push({
+      push(ref(db, 'comments'), {
         text: text,
         timestamp: new Date().toLocaleString()
       });
       document.getElementById('commentInput').value = ''; // Clear input
     }
 
-    db.ref('comments').on('value', snapshot => {
+    // Listen for new comments
+    onValue(ref(db, 'comments'), snapshot => {
       const container = document.getElementById('comments');
       container.innerHTML = ''; // Clear previous comments
       const data = snapshot.val();
@@ -63,3 +65,4 @@
 
 </body>
 </html>
+
